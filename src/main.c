@@ -9,12 +9,16 @@
 #ifdef TARGET_PLAYDATE
 	void privEsc(void) __attribute__((naked));
 	void privEsc() {
-		__asm volatile(
-			"nop\n"
-			"nop\n"
-			"nop\n"
-			"nop\n"
-			"nop\n"); //redacted
+		__asm volatile("push {lr}\n");
+		//rev A
+		//__asm volatile("movs lr, #0\n");
+		//__asm volatile("movt lr, #0x0805\n");
+		//__asm volatile("svc 2\n");
+		//rev B
+		__asm volatile("movs.w lr, #0\n");
+		__asm volatile("movt lr, #0x2405\n");
+		__asm volatile("svc #2\n");
+		__asm volatile("pop {pc}\n");
 	}
 #endif
 
